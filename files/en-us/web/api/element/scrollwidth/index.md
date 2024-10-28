@@ -21,7 +21,8 @@ as {{cssxref("::before")}} or {{cssxref("::after")}}. If the element's content c
 without a need for horizontal scrollbar, its `scrollWidth` is equal to
 {{domxref("Element.clientWidth", "clientWidth")}}
 
-> **Note:** This property will round the value to an integer. If you need a fractional value,
+> [!NOTE]
+> This property will round the value to an integer. If you need a fractional value,
 > use {{ domxref("element.getBoundingClientRect()") }}.
 
 ## Value
@@ -84,9 +85,9 @@ const div2 = document.getElementById("div2");
 const log1 = document.getElementById("log1");
 const log2 = document.getElementById("log2");
 
-// Check if the scrollWidth is bigger than the offsetWidth or not
+// Check if the scrollWidth is bigger than the clientWidth or not
 function isOverflowing(element) {
-  return element.scrollWidth > element.offsetWidth;
+  return element.scrollWidth > element.clientWidth;
 }
 
 function checkOverflow(element, log) {
@@ -123,5 +124,4 @@ Click the buttons to check if the content is overflowing the containers.
 ## See also
 
 - {{domxref("Element.clientWidth")}}
-- {{domxref("HTMLElement.offsetWidth")}}
 - [Determining the dimensions of elements](/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements)

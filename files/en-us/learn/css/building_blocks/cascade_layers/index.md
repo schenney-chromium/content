@@ -128,13 +128,14 @@ The ability to create nested layers also removes the worry of having conflicting
 
 Layers can be created using any one of the following methods:
 
-- The `@layer` statement at-rule, declaring layers using `@layer` followed by the names of one or more layers. This creates named layers without assigning any styles to them.
+- The [`@layer`](/en-US/docs/Web/CSS/@layer) statement at-rule, declaring layers using `@layer` followed by the names of one or more layers. This creates named layers without assigning any styles to them.
 - The `@layer` block at-rule, in which all styles within a block are added to a named or unnamed layer.
 - The [`@import`](/en-US/docs/Web/CSS/@import) rule with the `layer` keyword or `layer()` function, which assigns the contents of the imported file into that layer.
 
 All three methods create a layer if a layer with that name has not already been initialized. If no layer name is provided in the `@layer` at-rule or `@import` with `layer()`, a new anonymous (unnamed) layer is created.
 
-> **Note:** The order of precedence of layers is the order in which they are created. Styles not in a layer, or "unlayered styles", cascade together into a final implicit label.
+> [!NOTE]
+> The order of precedence of layers is the order in which they are created. Styles not in a layer, or "unlayered styles", cascade together into a final implicit label.
 
 Let's cover the three ways of creating a layer in a little more detail before discussing nested layers.
 
@@ -156,7 +157,7 @@ If the above statement is the first line of a site's CSS, the layer order will b
 
 Layers can be created using the block `@layer` at-rule. If an `@layer` at-rule is followed by an identifier and a block of styles, the identifier is used to name the layer, and the styles in this at-rule are added to the layer's styles. If a layer with the specified name does not already exist, a new layer will be created. If a layer with the specified name already exists, the styles are added to the previously existing layer. If no name is specified while creating a block of styles using `@layer`, the styles in the at-rule will be added to a new anonymous layer.
 
-In the example below, we've used four block and one inline `@layer` at-rules. This CSS does the following in the order listed:
+In the example below, we've used four `@layer` block at-rules and one `@layer` statement at-rule. This CSS does the following in the order listed:
 
 1. Creates a named `layout` layer
 2. Creates an unnamed, anonymous layer
@@ -210,7 +211,8 @@ We assigned some styles to the layer named `layout`. If a named layer doesn't al
 
 Anonymous layers are created by assigning styles to a layer without naming the layer. Styles can be added to an unnamed layer only at the time of its creation.
 
-> **Note:** Subsequent use of `@layer` with no layer name creates additional unnamed layers; it does not append styles to a previously existing unnamed layer.
+> [!NOTE]
+> Subsequent use of `@layer` with no layer name creates additional unnamed layers; it does not append styles to a previously existing unnamed layer.
 
 The `@layer` at-rule creates a layer, named or not, or appends styles to a layer if the named layer already exists. We called the first anonymous layer `<anonymous(01)>` and the second `<anonymous(02)>`, this is just so we can explain them. These are actually unnamed layers. There is no way to reference them or add additional styles to them.
 
@@ -256,13 +258,14 @@ You can import more than one CSS file into a single layer. The following declara
 You can import styles and create layers based on specific conditions using [media queries](/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) and [feature queries](/en-US/docs/Web/CSS/CSS_conditional_rules/Using_feature_queries). The following imports a style sheet into an `international` layer only if the browser supports `display: ruby`, and the file being imported is dependent on the width of the screen.
 
 ```css
-@import url("ruby-narrow.css") layer(international) supports(display: ruby) and
+@import url("ruby-narrow.css") layer(international) supports(display: ruby)
   (width < 32rem);
-@import url("ruby-wide.css") layer(international) supports(display: ruby) and
+@import url("ruby-wide.css") layer(international) supports(display: ruby)
   (width >= 32rem);
 ```
 
-> **Note:** There is no equivalent of the {{HTMLElement('link')}} method of linking stylesheets. Use `@import` to import a stylesheet into a layer when you can't use `@layer` within the stylesheet.
+> [!NOTE]
+> There is no equivalent of the {{HTMLElement('link')}} method of linking stylesheets. Use `@import` to import a stylesheet into a layer when you can't use `@layer` within the stylesheet.
 
 ## Overview of nested cascade layers
 
@@ -282,12 +285,12 @@ Let's look at the following example:
 
 ```css
 @import url("components-lib.css") layer(components);
-@import url("narrowtheme.css") layer(components.narrow);
+@import url("narrow-theme.css") layer(components.narrow);
 ```
 
 In the first line, we import `components-lib.css` into the `components` layer. If that file contains any layers, named or not, those layers become nested layers within the `components` layer.
 
-The second line imports `narrowtheme.css` into the `narrow` layer, which is a sub-layer of `components`. The nested `components.narrow` gets created as the last layer within the `components` layer, unless `components-lib.css` already contains a `narrow` layer, in which case, the contents of `narrowtheme.css` would be appended to the `components.narrow` nested layer. Additional nested named layers can be added to the `components` layer using the pattern `components.<layerName>`. As mentioned before, unnamed layers can be created but they cannot be accessed subsequently.
+The second line imports `narrow-theme.css` into the `narrow` layer, which is a sub-layer of `components`. The nested `components.narrow` gets created as the last layer within the `components` layer, unless `components-lib.css` already contains a `narrow` layer, in which case, the contents of `narrow-theme.css` would be appended to the `components.narrow` nested layer. Additional nested named layers can be added to the `components` layer using the pattern `components.<layerName>`. As mentioned before, unnamed layers can be created but they cannot be accessed subsequently.
 
 Let's look at another example, where we [import `layers1.css` into a named layer](#the_layer_block_at-rule_for_named_and_anonymous_layers) using the following statement:
 
@@ -348,7 +351,7 @@ Transitioning styles have the highest precedence. When a normal property value i
 
 {{EmbedGHLiveSample("css-examples/learn/layers/layer-precedence.html", '100%', 500)}}
 
-In this example, there are two inline layers `A` and `B` without styles, a block of unlayered styles, and two blocks of styles in named layers `A` and `B`.
+In this example, two layers (`A` and `B`) are initially defined using an `@layer` statement at-rule without any styles. The layer styles are defined in two `@layer` block at-rules appearing after the `h1` CSS rule declared outside of any layer.
 
 The inline styles added on the `h1` element using the `style` attribute, set a normal `color` and an important `background-color`. Normal inline styles override all layered and unlayered normal styles. Important inline styles override all layered and unlayered normal and important author styles. There is no way for author styles to override important inline styles.
 
